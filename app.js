@@ -30,7 +30,8 @@ const PEDIDO_DEMO = {
       solicitado: 11,
       surtido: 0,
       estado: 'pendiente',  // pendiente | parcial | completo | negado | parcial-negado
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '1365800',
@@ -43,7 +44,8 @@ const PEDIDO_DEMO = {
       solicitado: 7,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '1394001',
@@ -56,7 +58,8 @@ const PEDIDO_DEMO = {
       solicitado: 10,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '2389475',
@@ -69,7 +72,8 @@ const PEDIDO_DEMO = {
       solicitado: 8,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '2948576',
@@ -82,7 +86,8 @@ const PEDIDO_DEMO = {
       solicitado: 13,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '3847561',
@@ -95,7 +100,8 @@ const PEDIDO_DEMO = {
       solicitado: 15,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: true
     },
     {
       codigo: '9182736',
@@ -108,7 +114,8 @@ const PEDIDO_DEMO = {
       solicitado: 9,
       surtido: 0,
       estado: 'pendiente',
-      motivo_negacion: null
+      motivo_negacion: null,
+      requiereRevision: false
     }
   ]
 };
@@ -124,7 +131,46 @@ let state = {
   negacionCodigo: null,      // Código en proceso de negación
   negacionMotivo: null,      // Motivo seleccionado en negación
   scanDebounceTimer: null,   // Timer para debounce del scanner
+  revisionCodigo: null,      // Código del artículo en revisión activa
+  revisionConteo: 0,         // Piezas escaneadas en la revisión actual
+  revisionesHechas: new Set(),// Códigos que ya pasaron por revisión (evita repetir)
 };
+
+/* ============================================================
+   SISTEMA DE AUDIO — Web Audio API
+   BufferSource: cada play crea un nodo nuevo → sin límite de rapidez,
+   sin bloqueos por escaneo continuo.
+   ============================================================ */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const audioBuffers = {};
+
+async function loadSound(key, url) {
+  try {
+    const res = await fetch(url);
+    const arr = await res.arrayBuffer();
+    audioBuffers[key] = await audioCtx.decodeAudioData(arr);
+  } catch (e) {
+    console.warn(`Audio [${key}] no cargó:`, e);
+  }
+}
+
+function playSound(key) {
+  const buf = audioBuffers[key];
+  if (!buf) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx.destination);
+  src.start(0);
+}
+
+loadSound('ok',    'beep-ok.mp3');
+loadSound('error', 'beep-error.mp3');
+
+// Desbloquear AudioContext en primer toque (política autoplay de browsers)
+document.addEventListener('click', () => {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}, { once: true });
 
 /* ============================================================
    REFERENCIAS A ELEMENTOS DEL DOM
@@ -143,6 +189,8 @@ const overlays = {
   bsNegacion:    document.getElementById('bs-negacion-overlay'),
   modalNoFin:    document.getElementById('modal-no-finalizar-overlay'),
   modalParciales:document.getElementById('modal-parciales-overlay'),
+  revModal:      document.getElementById('rev-modal-overlay'),
+  revCancel:     document.getElementById('rev-cancel-overlay'),
 };
 
 /* ============================================================
@@ -162,7 +210,10 @@ function closeAllOverlays() {
 /* ============================================================
    TOASTS
    ============================================================ */
-function showToast(type, title, msg, duration = 4000) {
+function showToast(type, title, msg, duration = 800) {
+  if (type === 'success') playSound('ok');
+  else if (type === 'error' || type === 'warning') playSound('error');
+
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
@@ -213,6 +264,7 @@ document.getElementById('btn-back-asignacion').addEventListener('click', () => s
 document.getElementById('btn-asig-cancel').addEventListener('click', () => showScreen('menu'));
 document.getElementById('btn-asig-confirm').addEventListener('click', () => {
   state.pedido = JSON.parse(JSON.stringify(PEDIDO_DEMO)); // copia profunda
+  state.revisionesHechas = new Set();
   cargarSurtido();
   showScreen('surtido');
 });
@@ -232,11 +284,24 @@ function cargarSurtido() {
   }, 300);
 }
 
+function ordenEstado(art) {
+  if (state.revisionesHechas.has(art.codigo))                       return 4;
+  if (art.estado === 'parcial')                                      return 0;
+  if (art.estado === 'pendiente')                                    return 1;
+  if (art.estado === 'negado' || art.estado === 'parcial-negado')    return 2;
+  if (art.estado === 'completo')                                     return 3;
+  return 1;
+}
+
 function renderArticulosList() {
   const list = document.getElementById('articulos-list');
   list.innerHTML = '';
 
-  state.pedido.articulos.forEach((art, idx) => {
+  const sorted = state.pedido.articulos
+    .map((art, idx) => ({ art, idx }))
+    .sort((a, b) => ordenEstado(a.art) - ordenEstado(b.art));
+
+  sorted.forEach(({ art, idx }) => {
     const item = document.createElement('div');
     item.className = 'articulo-item';
     item.dataset.idx = idx;
@@ -247,6 +312,8 @@ function renderArticulosList() {
 
     if (art.estado === 'completo') {
       badgeClass += ' completo';
+    } else if (art.estado === 'parcial') {
+      badgeClass += ' parcial';
     } else if (art.estado === 'negado') {
       badgeClass = 'badge-negado';
       badgeText  = 'Negado';
@@ -254,6 +321,14 @@ function renderArticulosList() {
       badgeClass = 'badge-negado';
       badgeText  = `${art.surtido}/${art.solicitado} Neg.`;
     }
+
+    // Palomita de verificación para productos revisados
+    const revisado = state.revisionesHechas.has(art.codigo);
+    const checkColor = art.estado === 'completo' ? 'verde' : 'rojo';
+    const checkIcon = revisado ? `
+      <div class="articulo-rev-icon ${checkColor}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </div>` : '';
 
     item.innerHTML = `
       <div class="articulo-info">
@@ -263,9 +338,7 @@ function renderArticulosList() {
       <div class="articulo-badge">
         <span class="${badgeClass}">${badgeText}</span>
       </div>
-      <button class="btn-articulo-nav" data-idx="${idx}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-      </button>
+      ${checkIcon}
     `;
 
     item.addEventListener('click', () => abrirDetalle(idx));
@@ -467,6 +540,10 @@ function procesarCodigoProducto(codigo, cantidad, esMiscelaneo) {
 
   renderArticulosList();
   actualizarContadores();
+
+  if (art.estado === 'completo') {
+    verificarRevision(state.pedido.articulos.indexOf(art));
+  }
 }
 
 /* ============================================================
@@ -525,11 +602,14 @@ function abrirDetalle(idx) {
   document.getElementById('btn-stepper-plus').disabled  = negado;
   document.getElementById('det-cantidad-input').disabled = negado;
   document.getElementById('btn-detalle-negar').disabled  = negado;
-  if (negado) {
-    document.getElementById('btn-detalle-negar').style.opacity = '0.5';
-  } else {
-    document.getElementById('btn-detalle-negar').style.opacity = '1';
-  }
+  document.getElementById('btn-detalle-negar').style.opacity = negado ? '0.5' : '1';
+
+  // Botón Revisar: visible cuando el producto requiere revisión y aún no se revisó
+  const necesitaRevision = art.requiereRevision
+    && ['completo', 'negado', 'parcial-negado'].includes(art.estado)
+    && !state.revisionesHechas.has(art.codigo);
+  const btnRevisar = document.getElementById('btn-detalle-revisar');
+  btnRevisar.classList.toggle('hidden', !necesitaRevision);
 
   showScreen('detalle');
 }
@@ -598,11 +678,17 @@ document.getElementById('btn-detalle-regresar').addEventListener('click', () => 
   guardarCantidadDetalle(parseInt(document.getElementById('det-cantidad-input').value, 10) || 0);
   renderArticulosList();
   actualizarContadores();
+  if (verificarRevision(state.articuloActivo)) return;
   showScreen('surtido');
   setTimeout(() => {
     const inp = document.getElementById('scanner-input-surtido');
     if (inp) inp.focus();
   }, 300);
+});
+
+/* Botón Revisar producto */
+document.getElementById('btn-detalle-revisar').addEventListener('click', () => {
+  abrirRevision(state.articuloActivo);
 });
 
 /* Botón Negar producto */
@@ -664,11 +750,16 @@ document.getElementById('neg-confirm').addEventListener('click', () => {
   overlays.bsNegacion.classList.add('hidden');
   showToast('warning', 'Producto negado', `${art.codigo} negado por: ${state.negacionMotivo}`);
 
+  const codigoNegado = state.negacionCodigo;
   state.negacionCodigo = null;
   state.negacionMotivo = null;
 
   renderArticulosList();
   actualizarContadores();
+
+  const idxNegado = state.pedido.articulos.findIndex(a => a.codigo === codigoNegado);
+  if (idxNegado >= 0 && verificarRevision(idxNegado)) return;
+
   showScreen('surtido');
   setTimeout(() => {
     const inp = document.getElementById('scanner-input-surtido');
@@ -757,6 +848,167 @@ document.getElementById('btn-resumen-menu').addEventListener('click', () => {
   state.pedido = null;
   state.articuloActivo = null;
   showScreen('menu');
+});
+
+/* ============================================================
+   REVISIÓN DE MERCANCÍA — pantalla completa
+   Se activa al completar/negar un artículo con requiereRevision=true.
+   Muestra foto del producto, tabla de avance y barra de progreso.
+   ============================================================ */
+
+/* Abre revisión si el artículo en ese índice la requiere. Devuelve true si la abrió. */
+function verificarRevision(idx) {
+  const art = state.pedido.articulos[idx];
+  const estadoFinal = ['completo', 'negado', 'parcial-negado'].includes(art.estado);
+  if (estadoFinal && art.requiereRevision && !state.revisionesHechas.has(art.codigo)) {
+    abrirRevision(idx);
+    return true;
+  }
+  return false;
+}
+
+function abrirRevision(idx) {
+  const art = state.pedido.articulos[idx];
+  state.revisionCodigo  = art.codigo;
+  state.revisionConteo  = 0;
+  renderRevisionScreen();
+  document.getElementById('rev-scan-input').value     = '';
+  document.getElementById('rev-scan-input').inputMode = 'none';
+  overlays.revModal.classList.remove('hidden');
+  setTimeout(() => document.getElementById('rev-scan-input').focus(), 300);
+}
+
+function renderRevisionScreen() {
+  const art = state.pedido.articulos.find(a => a.codigo === state.revisionCodigo);
+  if (!art) return;
+
+  const total  = art.surtido;
+  const actual = state.revisionConteo;
+  const pct    = total > 0 ? Math.round((actual / total) * 100) : 0;
+
+  document.getElementById('rev-pieza-actual').textContent  = actual;
+  document.getElementById('rev-pieza-total').textContent   = total;
+  document.getElementById('rev-progress-fill').style.width = `${pct}%`;
+  document.getElementById('rev-current-codigo').textContent = art.codigo;
+  document.getElementById('rev-current-nombre').textContent = art.nombre;
+}
+
+function procesarRevisionScan(raw) {
+  if (!raw || !state.revisionCodigo) return;
+  let codigoProducto;
+
+  if (raw.length === 18 && /^\d+$/.test(raw)) {
+    codigoProducto = raw.substring(0, 7);
+  } else if (raw.length === 7 && /^\d+$/.test(raw)) {
+    codigoProducto = raw;
+  } else {
+    showToast('error', 'Código inválido', 'Escanea la etiqueta de 18 dígitos o ingresa el código de 7 dígitos.');
+    return;
+  }
+
+  if (codigoProducto !== state.revisionCodigo) {
+    showToast('error', 'Código incorrecto', `Se esperaba ${state.revisionCodigo}, se recibió ${codigoProducto}.`);
+    return;
+  }
+
+  const art = state.pedido.articulos.find(a => a.codigo === state.revisionCodigo);
+  state.revisionConteo++;
+
+  if (state.revisionConteo < art.surtido) {
+    // Todavía faltan piezas
+    renderRevisionScreen();
+    showToast('success', 'Pieza confirmada', `${state.revisionConteo} de ${art.surtido} piezas escaneadas.`);
+    return;
+  }
+
+  // Todas las piezas escaneadas → revisión completa
+  state.revisionesHechas.add(state.revisionCodigo);
+  showToast('success', 'Revisión completa', `${art.surtido} de ${art.surtido} piezas verificadas.`);
+  state.revisionCodigo = null;
+  state.revisionConteo = 0;
+
+  overlays.revModal.classList.add('hidden');
+  setTimeout(() => {
+    const inp = document.getElementById('scanner-input-surtido');
+    if (inp) inp.focus();
+  }, 300);
+}
+
+/* Cancelar revisión — muestra confirmación antes de restablecer */
+document.getElementById('btn-back-revision').addEventListener('click', () => {
+  const codigo = state.revisionCodigo;
+  document.getElementById('rev-cancel-msg').textContent =
+    `La mercancía del producto ${codigo} tendrá que ser surtida o negada nuevamente.`;
+  overlays.revCancel.classList.remove('hidden');
+});
+
+/* Confirmación cancelar — NO, volver a la revisión */
+document.getElementById('rev-cancel-no').addEventListener('click', () => {
+  overlays.revCancel.classList.add('hidden');
+});
+
+/* Confirmación cancelar — SÍ, restablecer solo ese producto */
+document.getElementById('rev-cancel-yes').addEventListener('click', () => {
+  const art = state.pedido.articulos.find(a => a.codigo === state.revisionCodigo);
+  if (art) {
+    art.estado          = 'pendiente';
+    art.surtido         = 0;
+    art.motivo_negacion = null;
+    state.revisionesHechas.delete(art.codigo);
+    renderArticulosList();
+    actualizarContadores();
+  }
+  const codigo = state.revisionCodigo;
+  state.revisionCodigo = null;
+  state.revisionConteo = 0;
+  overlays.revCancel.classList.add('hidden');
+  overlays.revModal.classList.add('hidden');
+  showToast('warning', 'Mercancía restablecida', `El producto ${codigo} fue restablecido y deberá surtirse nuevamente.`);
+  setTimeout(() => {
+    const inp = document.getElementById('scanner-input-surtido');
+    if (inp) inp.focus();
+  }, 300);
+});
+
+/* Scanner de la pantalla de revisión — debounce idéntico al scanner principal */
+const revScanInput = document.getElementById('rev-scan-input');
+let revScanProcessed = false;
+let revScanDebounce  = null;
+
+revScanInput.addEventListener('input', () => {
+  clearTimeout(revScanDebounce);
+  const val = revScanInput.value.trim();
+  if (val.length === 18) {
+    revScanDebounce = setTimeout(() => {
+      if (!revScanProcessed) { procesarRevisionScan(val); revScanInput.value = ''; }
+      revScanProcessed = false;
+    }, 80);
+  }
+});
+
+revScanInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    clearTimeout(revScanDebounce);
+    revScanProcessed = true;
+    const val = revScanInput.value.trim();
+    if (val) { procesarRevisionScan(val); revScanInput.value = ''; }
+    setTimeout(() => { revScanProcessed = false; }, 200);
+  }
+});
+
+document.getElementById('rev-btn-send').addEventListener('click', () => {
+  clearTimeout(revScanDebounce);
+  revScanProcessed = true;
+  const val = revScanInput.value.trim();
+  if (val) { procesarRevisionScan(val); revScanInput.value = ''; }
+  setTimeout(() => { revScanProcessed = false; }, 200);
+});
+
+document.getElementById('rev-btn-keyboard').addEventListener('click', () => {
+  revScanInput.inputMode = revScanInput.inputMode === 'text' ? 'none' : 'text';
+  revScanInput.focus();
+  revScanInput.select();
 });
 
 /* ============================================================

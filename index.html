@@ -184,7 +184,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
             <div style="display:flex;align-items:center;gap:4px;">
-              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e53935"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" fill="white"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e53935"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L16.9 18.31C15.55 19.37 13.85 20 12 20zm6.31-3.1L7.1 5.69C8.45 4.63 10.15 4 12 4c4.42 0 8 3.58 8 8 0 1.85-.63 3.55-1.69 4.9z" fill="white"/></svg>
               <span style="font-size:18px;font-weight:700;color:#1a1a2e;" id="cnt-negado">0</span>
             </div>
             <span style="font-size:10px;color:#777;font-weight:500;">Negado</span>
@@ -215,7 +215,7 @@
     <!-- Footer scanner -->
     <div class="footer-scanner">
       <button class="btn-keyboard" id="btn-keyboard-surtido" title="Teclado manual">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="#333"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 5H5v-2h2v2zm11 0H7v-2h11v2zm0-3h-2v-2h2v2zm0-3h-2V8h2v2zm-4 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 5H5v-2h2v2zm11 0H7v-2h11v2zm0-3h-2v-2h2v2zm0-3h-2V8h2v2zm-4 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
       </button>
       <input
         type="text"
@@ -306,15 +306,84 @@
 
     </div>
 
-    <!-- Footer Regresar / Negar -->
-    <div class="footer-actions">
-      <button class="btn-detalle-regresar" id="btn-detalle-regresar">Regresar</button>
-      <button class="btn-detalle-negar" id="btn-detalle-negar">Negar producto</button>
+    <!-- Footer Regresar / Negar / Revisar -->
+    <div class="footer-actions" style="flex-direction:column;gap:10px;">
+      <div style="display:flex;gap:10px;width:100%;">
+        <button class="btn-detalle-regresar" id="btn-detalle-regresar">Regresar</button>
+        <button class="btn-detalle-negar" id="btn-detalle-negar">Negar producto</button>
+      </div>
+      <button class="btn-detalle-revisar hidden" id="btn-detalle-revisar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M20 5h-6v6h6V5zm-6 8h1.5v1.5H14V13zm1.5 1.5H17V16h-1.5v-1.5zM17 13h1.5v1.5H17V13zm-3 3h1.5v1.5H14V16zm1.5 1.5H17V19h-1.5v-1.5zM17 16h1.5v1.5H17V16zm1.5-1.5H20V16h-1.5v-1.5zm0 3H20V19h-1.5v-1.5z"/></svg>
+        Revisar producto
+      </button>
     </div>
   </div>
 
   <!-- ============================================================
-       SCREEN 5: RESUMEN FINAL
+       MODAL: REVISIÓN DE MERCANCÍA
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="rev-modal-overlay">
+    <div class="bottom-sheet" style="padding:0;overflow:hidden;">
+      <div class="bottom-sheet-handle" style="margin:10px auto 0;"></div>
+
+      <!-- Encabezado del modal -->
+      <div class="rev-modal-header">
+        <div class="rev-modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1B3892"><path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M20 5h-6v6h6V5z"/></svg>
+          Revisión de mercancía
+        </div>
+        <button class="rev-modal-cancel" id="btn-back-revision">Cancelar</button>
+      </div>
+
+      <!-- Contador de piezas -->
+      <div class="rev-pieza-box">
+        <div class="rev-pieza-nums">
+          <span id="rev-pieza-actual">0</span>
+          <span class="rev-pieza-sep">/</span>
+          <span id="rev-pieza-total">0</span>
+        </div>
+        <div class="rev-pieza-label">piezas escaneadas</div>
+        <div class="rev-progress-track" style="margin-top:10px;">
+          <div class="rev-progress-fill" id="rev-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Imagen + Código + Nombre -->
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:0 16px 16px;">
+        <div class="detalle-img-box" style="width:90px;height:90px;min-width:90px;max-height:90px;border-radius:10px;flex-shrink:0;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="#c5cae9"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;">
+          <div class="detalle-field-pill">
+            <span class="detalle-pill-label">Código</span>
+            <span class="detalle-pill-value" id="rev-current-codigo">—</span>
+          </div>
+          <div class="detalle-nombre-box" id="rev-current-nombre">—</div>
+        </div>
+      </div>
+
+      <!-- Footer scanner -->
+      <div class="footer-scanner" style="border-radius:0;flex-shrink:0;">
+        <button class="btn-keyboard" id="rev-btn-keyboard" title="Teclado manual">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 5H5v-2h2v2zm11 0H7v-2h11v2zm0-3h-2v-2h2v2zm0-3h-2V8h2v2zm-4 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
+        </button>
+        <input
+          type="text"
+          class="scanner-input"
+          id="rev-scan-input"
+          placeholder="Escanear etiqueta (18 dígitos)..."
+          autocomplete="off"
+          inputmode="none"
+        />
+        <button id="rev-btn-send" style="background:none;border:none;cursor:pointer;padding:6px;display:flex;align-items:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#1B3892"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 6: RESUMEN FINAL
   ============================================================ -->
   <div class="screen" id="screen-resumen">
     <div class="header-sub">
@@ -499,6 +568,30 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
         <button class="bs-btn-confirm" id="parciales-confirm">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: CONFIRMAR CIERRE DE REVISIÓN
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="rev-cancel-overlay">
+    <div class="bottom-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <div style="width:64px;height:64px;background:#e53935;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 12px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      </div>
+      <div class="bs-title" style="color:#e53935;">¿Cancelar la revisión?</div>
+      <div class="bs-subtitle" id="rev-cancel-msg" style="margin-bottom:20px;">
+        La mercancía del producto tendrá que ser surtida o negada nuevamente.
+      </div>
+      <div class="bs-footer">
+        <button class="bs-btn-cancel" id="rev-cancel-no">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        <button class="bs-btn-confirm" id="rev-cancel-yes">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </button>
       </div>
