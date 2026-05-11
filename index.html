@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Surtido HH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="device-frame">
+
+  <!-- ============================================================
+       SCREEN 1: MENÚ PRINCIPAL
+  ============================================================ -->
+  <div class="screen active" id="screen-menu">
+    <div class="header-menu">
+      <span class="header-title">Menú</span>
+    </div>
+    <div class="screen-menu-body">
+      <div class="menu-cards">
+        <div class="menu-card card-tareas" id="btn-tareas">
+          <span class="card-label">Tareas</span>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+        </div>
+        <div class="menu-card card-consulta">
+          <span class="card-label">Consulta de<br>tareas cargadas</span>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          </div>
+        </div>
+        <div class="menu-card card-descarga">
+          <span class="card-label">Descarga de<br>mercancía</span>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          </div>
+        </div>
+        <div class="menu-card card-evidencias">
+          <span class="card-label">Evidencias de<br>envíos</span>
+          <div class="badge">+5</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="footer-menu">
+        <button class="btn-salir">Salir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 2: ASIGNACIÓN DE TAREAS
+  ============================================================ -->
+  <div class="screen" id="screen-asignacion">
+    <div class="header-sub">
+      <button class="btn-back" id="btn-back-asignacion">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Menú
+      </button>
+      <div class="header-icon-center">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <div style="width:36px;"></div>
+    </div>
+
+    <div class="screen-content" style="padding-bottom:80px;">
+      <div class="screen-title">Asignación de tareas</div>
+
+      <div class="section-block">
+        <div class="section-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1B3892"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span>Empleado</span>
+        </div>
+        <div class="field-row">
+          <div class="field-id" id="asig-emp-id">9029</div>
+          <div class="field-name" id="asig-emp-nombre">JUAN ANTONIO GUERRERO MEDINA</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1B3892"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <span>Tarea asignada</span>
+        </div>
+        <div class="field-row">
+          <div class="field-id" id="asig-tarea-id">9029</div>
+          <div class="field-name" id="asig-tarea-nombre">JUAN ANTONIO GUERRERO MEDINA</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>Actividad</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+          <div class="info-card-body" id="asig-actividad">SURTIR PEDIDO CLIENTE</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>Fecha</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+          </div>
+          <div class="info-card-body">
+            <div class="fecha-row">
+              <span class="fecha-label">Fecha inicio:</span>
+              <span class="fecha-value" id="asig-fecha">31/08/2023</span>
+            </div>
+            <div class="fecha-row">
+              <span class="fecha-label">Hora inicio:</span>
+              <span class="fecha-value" id="asig-hora">11:30 a.m.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>DocumentoID</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          </div>
+          <div class="info-card-body" id="asig-documento">SURTIR PEDIDO CLIENTE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="btn-cancel" id="btn-asig-cancel">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <button class="btn-confirm" id="btn-asig-confirm">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 3: SURTIDO DE ÓRDENES (lista)
+  ============================================================ -->
+  <div class="screen" id="screen-surtido">
+    <div class="header-sub">
+      <button class="btn-back" id="btn-back-surtido">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Menú
+      </button>
+      <div class="header-icon-center">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <button class="btn-more-options" id="btn-menu-opciones">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="screen-title">Surtido de órdenes</div>
+
+    <div class="screen-content revision-content" id="surtido-content" style="padding-bottom:80px;">
+
+      <!-- Panel avance del pedido -->
+      <div class="avance-panel">
+        <div class="avance-header">
+          <div class="avance-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            Avance del pedido
+          </div>
+          <span class="pedido-id" id="avance-pedido-id">Pedido 123456</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:10px 14px 14px;gap:4px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2e7d32"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="white"/></svg>
+              <span style="font-size:18px;font-weight:700;color:#1a1a2e;" id="cnt-completado">0</span>
+            </div>
+            <span style="font-size:10px;color:#777;font-weight:500;">Completado</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e53935"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" fill="white"/></svg>
+              <span style="font-size:18px;font-weight:700;color:#1a1a2e;" id="cnt-negado">0</span>
+            </div>
+            <span style="font-size:10px;color:#777;font-weight:500;">Negado</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1B3892"/><path d="M11 7h2v5.41l3.29 3.3-1.41 1.41L11 13.17V7z" fill="white"/></svg>
+              <span style="font-size:18px;font-weight:700;color:#1a1a2e;" id="cnt-parcial">0</span>
+            </div>
+            <span style="font-size:10px;color:#777;font-weight:500;">Parcial</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f9a825"/><path d="M11 7h2v6h-2zm0 8h2v2h-2z" fill="white"/></svg>
+              <span style="font-size:18px;font-weight:700;color:#1a1a2e;" id="cnt-pendiente">0</span>
+            </div>
+            <span style="font-size:10px;color:#777;font-weight:500;">Pendientes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de artículos -->
+      <div class="articulos-list" id="articulos-list">
+        <!-- generado por JS -->
+      </div>
+    </div>
+
+    <!-- Footer scanner -->
+    <div class="footer-scanner">
+      <button class="btn-keyboard" id="btn-keyboard-surtido" title="Teclado manual">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#333"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 5H5v-2h2v2zm11 0H7v-2h11v2zm0-3h-2v-2h2v2zm0-3h-2V8h2v2zm-4 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
+      </button>
+      <input
+        type="text"
+        class="scanner-input"
+        id="scanner-input-surtido"
+        placeholder="Escanear o ingresar código..."
+        autocomplete="off"
+        inputmode="none"
+      />
+      <button class="btn-scan-send" id="btn-scan-send-surtido">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1B3892"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 4: DETALLE DEL PRODUCTO
+  ============================================================ -->
+  <div class="screen" id="screen-detalle">
+    <div class="header-sub">
+      <button class="btn-back" id="btn-back-detalle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="header-icon-center">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <div style="width:36px;"></div>
+    </div>
+
+    <div class="screen-title">Detalle del producto</div>
+    <hr class="detalle-divider" />
+
+    <div class="screen-content detalle-content" id="detalle-content">
+
+      <!-- Imagen + Código + Nombre -->
+      <div class="detalle-top-row">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div class="detalle-img-box" style="width:110px;height:110px;min-width:110px;max-height:110px;border-radius:10px;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="#c5cae9"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+            <div class="detalle-field-pill">
+              <span class="detalle-pill-label">Código</span>
+              <span class="detalle-pill-value" id="det-codigo">—</span>
+            </div>
+            <div class="detalle-nombre-box" id="det-nombre">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid campos: Ubicación, Pasillo, Torre, Nivel, Existencia, Solicitado -->
+      <div class="detalle-grid-2">
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Ubicación</span>
+          <span class="detalle-pill-value" id="det-ubicacion">—</span>
+        </div>
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Pasillo</span>
+          <span class="detalle-pill-value" id="det-pasillo">—</span>
+        </div>
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Torre</span>
+          <span class="detalle-pill-value" id="det-torre">—</span>
+        </div>
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Nivel</span>
+          <span class="detalle-pill-value" id="det-nivel">—</span>
+        </div>
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Existencia</span>
+          <span class="detalle-pill-value" id="det-existencia">—</span>
+        </div>
+        <div class="detalle-field-pill">
+          <span class="detalle-pill-label">Solicitado</span>
+          <span class="detalle-pill-value" id="det-solicitado">—</span>
+        </div>
+      </div>
+
+      <!-- Stepper cantidad surtida -->
+      <div class="detalle-cantidad-row">
+        <span class="detalle-cantidad-label">Cantidad surtida:</span>
+        <div class="detalle-stepper">
+          <button class="stepper-btn minus" id="btn-stepper-minus" style="background:#1B3892;">−</button>
+          <input type="number" class="stepper-input" id="det-cantidad-input" value="0" min="0" />
+          <button class="stepper-btn plus" id="btn-stepper-plus" style="background:#bdbdbd;">+</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Regresar / Negar -->
+    <div class="footer-actions">
+      <button class="btn-detalle-regresar" id="btn-detalle-regresar">Regresar</button>
+      <button class="btn-detalle-negar" id="btn-detalle-negar">Negar producto</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 5: RESUMEN FINAL
+  ============================================================ -->
+  <div class="screen" id="screen-resumen">
+    <div class="header-sub">
+      <div style="width:36px;"></div>
+      <div class="header-icon-center">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <div style="width:36px;"></div>
+    </div>
+
+    <div class="screen-content screen-resumen">
+      <div class="resumen-body">
+        <div class="resumen-check">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div class="resumen-titulo">¡Surtido completado!</div>
+        <div class="resumen-sub" id="resumen-sub-text">El pedido ha sido procesado correctamente.</div>
+        <div class="resumen-stats">
+          <div class="resumen-stat">
+            <span class="resumen-stat-num verde" id="res-completado">0</span>
+            <span class="resumen-stat-label">Completados</span>
+          </div>
+          <div class="resumen-stat">
+            <span class="resumen-stat-num rojo" id="res-negado">0</span>
+            <span class="resumen-stat-label">Negados</span>
+          </div>
+          <div class="resumen-stat">
+            <span class="resumen-stat-num" style="color:#1B3892;" id="res-parcial">0</span>
+            <span class="resumen-stat-label">Parciales</span>
+          </div>
+        </div>
+        <div class="resumen-actions">
+          <button class="btn-resumen-primary" id="btn-resumen-menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Volver al menú
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BOTTOM SHEET: CANTIDAD (código 7 dígitos / manual)
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="bs-cantidad-overlay">
+    <div class="bottom-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <div class="bs-icon-tally">
+        <!-- Ícono palitos de conteo (tally) -->
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+          <rect x="3" y="5" width="2.5" height="14" rx="1.2"/>
+          <rect x="7" y="5" width="2.5" height="14" rx="1.2"/>
+          <rect x="11" y="5" width="2.5" height="14" rx="1.2"/>
+          <rect x="15" y="5" width="2.5" height="14" rx="1.2"/>
+          <rect x="3" y="10" width="16" height="2.5" rx="1.2" transform="rotate(15 3 10)"/>
+        </svg>
+      </div>
+      <div class="bs-title">Ingresa la cantidad surtida en contenedor</div>
+      <div class="bs-codigo-row">
+        <span class="bs-codigo-label">Código</span>
+        <span class="bs-codigo-val" id="bs-codigo-val">—</span>
+      </div>
+      <input type="number" class="bs-input" id="bs-cantidad-input" value="" min="1" placeholder="0" inputmode="numeric" />
+      <div class="bs-footer">
+        <button class="bs-btn-cancel" id="bs-cancel">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        <button class="bs-btn-confirm" id="bs-confirm">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BOTTOM SHEET: MENÚ DE OPCIONES (3 puntos)
+  ============================================================ -->
+  <div class="options-sheet-overlay hidden" id="options-sheet-overlay">
+    <div class="options-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <!-- Ícono 3 puntos circular -->
+      <div style="width:64px;height:64px;background:#1B3892;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 4px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </div>
+      <div class="options-sheet-title">Menú</div>
+      <button class="options-sheet-btn blue" id="opt-repetir-audio">Repetir audio</button>
+      <button class="options-sheet-btn red" id="opt-finalizar-surtido">Finalizar surtido</button>
+      <button class="options-sheet-btn red-outline" id="opt-cerrar-menu" style="margin-top:6px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#e53935" style="vertical-align:middle;margin-right:4px;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BOTTOM SHEET: SELECCIÓN DE MOTIVO NEGADO
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="bs-negacion-overlay">
+    <div class="bottom-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <!-- Ícono clipboard circular -->
+      <div style="width:64px;height:64px;background:#1B3892;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 12px;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </div>
+      <div class="bs-title">Selección de motivo negado</div>
+      <div style="padding:4px 20px 8px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+          <span style="font-size:14px;font-weight:700;color:#1a1a2e;">Código</span>
+          <span style="font-size:14px;font-weight:700;color:#1B3892;" id="neg-codigo-val">—</span>
+        </div>
+        <div style="font-size:12px;color:#777;line-height:1.4;" id="neg-nombre-val">—</div>
+      </div>
+      <!-- Dropdown motivo -->
+      <div style="padding:4px 20px 12px;">
+        <div style="position:relative;">
+          <div style="display:flex;align-items:center;border:1.5px solid #1B3892;border-radius:8px;overflow:hidden;cursor:pointer;background:#fff;" id="neg-dropdown-trigger">
+            <div style="background:#1B3892;padding:10px 12px;display:flex;align-items:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            </div>
+            <span style="flex:1;padding:10px 12px;font-size:14px;color:#555;" id="neg-motivo-texto">Seleccionar una opción</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#777" style="margin-right:10px;"><path d="M7 10l5 5 5-5z"/></svg>
+          </div>
+          <!-- Opciones del dropdown -->
+          <div class="hidden" id="neg-dropdown-list" style="position:absolute;left:0;right:0;top:100%;background:#fff;border:1.5px solid #1B3892;border-top:none;border-radius:0 0 8px 8px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+            <div class="neg-option" data-value="Sin existencia" style="padding:12px 16px;font-size:14px;color:#1a1a2e;cursor:pointer;border-bottom:1px solid #f0f0f0;">Sin existencia</div>
+            <div class="neg-option" data-value="Producto dañado" style="padding:12px 16px;font-size:14px;color:#1a1a2e;cursor:pointer;border-bottom:1px solid #f0f0f0;">Producto dañado</div>
+            <div class="neg-option" data-value="Producto incorrecto" style="padding:12px 16px;font-size:14px;color:#1a1a2e;cursor:pointer;border-bottom:1px solid #f0f0f0;">Producto incorrecto</div>
+            <div class="neg-option" data-value="Ubicación incorrecta" style="padding:12px 16px;font-size:14px;color:#1a1a2e;cursor:pointer;">Ubicación incorrecta</div>
+          </div>
+        </div>
+      </div>
+      <div class="bs-footer">
+        <button class="bs-btn-cancel" id="neg-cancel">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        <button class="bs-btn-confirm" id="neg-confirm" style="background:#9e9e9e;" disabled>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: NO ES POSIBLE FINALIZAR (hay pendientes)
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="modal-no-finalizar-overlay">
+    <div class="bottom-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <div style="width:64px;height:64px;background:#1B3892;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 12px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      </div>
+      <div class="bs-title" style="font-size:17px;padding-bottom:8px;">No es posible finalizar surtido</div>
+      <div style="padding:0 20px 16px;font-size:14px;color:#555;line-height:1.5;text-align:center;">
+        Tienes <strong>códigos sin surtir</strong>, para finalizar el surtido primero deberás negarlos entrando al detalle del producto.
+      </div>
+      <div style="padding:0 20px 8px;">
+        <button class="bs-btn-cancel" style="width:100%;border-radius:8px;" id="modal-no-fin-close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: FINALIZAR CON PARCIALES
+  ============================================================ -->
+  <div class="bottom-sheet-overlay hidden" id="modal-parciales-overlay">
+    <div class="bottom-sheet">
+      <div class="bottom-sheet-handle"></div>
+      <div style="width:64px;height:64px;background:#1B3892;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto 12px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      </div>
+      <div class="bs-title" style="font-size:17px;padding-bottom:8px;">Finalizar surtido</div>
+      <div style="padding:0 20px 8px;font-size:14px;color:#555;line-height:1.5;text-align:center;">
+        Tienes códigos <strong>surtidos parcialmente</strong>. ¿Deseas continuar? Revisa con cuidado la información, las piezas solicitadas podrían estar en otro lado.
+      </div>
+      <!-- Lista de parciales -->
+      <div style="padding:0 20px 8px;max-height:160px;overflow-y:auto;" id="parciales-list">
+        <!-- generado por JS -->
+      </div>
+      <div class="bs-footer">
+        <button class="bs-btn-cancel" id="parciales-cancel">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+        <button class="bs-btn-confirm" id="parciales-confirm">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST CONTAINER
+  ============================================================ -->
+  <div class="toast-container" id="toast-container"></div>
+
+</div><!-- /device-frame -->
+
+<script src="app.js"></script>
+</body>
+</html>
