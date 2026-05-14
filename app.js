@@ -394,6 +394,20 @@ const btnKeyboard  = document.getElementById('btn-keyboard-surtido');
 // Flag para evitar doble disparo (debounce + Enter)
 let scanProcessed = false;
 
+// Helper: devuelve true si la pantalla surtido está activa y no hay overlay abierto
+function surtidoActivo() {
+  return screens.surtido.classList.contains('active') &&
+    Object.values(overlays).every(o => o.classList.contains('hidden'));
+}
+
+// Auto-refoco: si el scanner pierde foco sin razón (DOM rebuild, toque accidental)
+// lo recupera automáticamente mientras estemos en la pantalla de surtido
+scannerInput.addEventListener('blur', () => {
+  if (surtidoActivo()) {
+    setTimeout(() => scannerInput.focus(), 30);
+  }
+});
+
 // Debounce para lectores de código de barras (disparan rápido, 18 dígitos)
 scannerInput.addEventListener('input', () => {
   clearTimeout(state.scanDebounceTimer);
@@ -403,6 +417,7 @@ scannerInput.addEventListener('input', () => {
       if (!scanProcessed) {
         procesarEscaneo(val);
         scannerInput.value = '';
+        scannerInput.focus();
       }
       scanProcessed = false;
     }, 80);
@@ -419,6 +434,7 @@ scannerInput.addEventListener('keydown', (e) => {
     if (val) {
       procesarEscaneo(val);
       scannerInput.value = '';
+      scannerInput.focus();
     }
     setTimeout(() => { scanProcessed = false; }, 200);
   }
@@ -432,6 +448,7 @@ btnScanSend.addEventListener('click', () => {
   if (val) {
     procesarEscaneo(val);
     scannerInput.value = '';
+    scannerInput.focus();
   }
   setTimeout(() => { scanProcessed = false; }, 200);
 });
@@ -975,12 +992,23 @@ const revScanInput = document.getElementById('rev-scan-input');
 let revScanProcessed = false;
 let revScanDebounce  = null;
 
+// Auto-refoco en el scanner de revisión mientras el modal esté visible
+revScanInput.addEventListener('blur', () => {
+  if (!overlays.revModal.classList.contains('hidden')) {
+    setTimeout(() => revScanInput.focus(), 30);
+  }
+});
+
 revScanInput.addEventListener('input', () => {
   clearTimeout(revScanDebounce);
   const val = revScanInput.value.trim();
   if (val.length === 18) {
     revScanDebounce = setTimeout(() => {
-      if (!revScanProcessed) { procesarRevisionScan(val); revScanInput.value = ''; }
+      if (!revScanProcessed) {
+        procesarRevisionScan(val);
+        revScanInput.value = '';
+        revScanInput.focus();
+      }
       revScanProcessed = false;
     }, 80);
   }
@@ -992,7 +1020,7 @@ revScanInput.addEventListener('keydown', (e) => {
     clearTimeout(revScanDebounce);
     revScanProcessed = true;
     const val = revScanInput.value.trim();
-    if (val) { procesarRevisionScan(val); revScanInput.value = ''; }
+    if (val) { procesarRevisionScan(val); revScanInput.value = ''; revScanInput.focus(); }
     setTimeout(() => { revScanProcessed = false; }, 200);
   }
 });
@@ -1001,7 +1029,7 @@ document.getElementById('rev-btn-send').addEventListener('click', () => {
   clearTimeout(revScanDebounce);
   revScanProcessed = true;
   const val = revScanInput.value.trim();
-  if (val) { procesarRevisionScan(val); revScanInput.value = ''; }
+  if (val) { procesarRevisionScan(val); revScanInput.value = ''; revScanInput.focus(); }
   setTimeout(() => { revScanProcessed = false; }, 200);
 });
 
