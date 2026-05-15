@@ -20,22 +20,6 @@ const PEDIDO_DEMO = {
   documento: 'SURTIR PEDIDO CLIENTE',
   articulos: [
     {
-      codigo: '0245130',
-      nombre: 'AGUA PARA BATERIA 500 REIDEN R-AG',
-      ubicacion: 'Planta Baja',
-      pasillo: '11',
-      torre: '4',
-      nivel: '2',
-      existencia: 40,
-      solicitado: 2,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      imagen: 'ASSET/0245130.jpg',
-      esMiscelaneo: false,
-      requiereRevision: true
-    },
-    {
       codigo: '1964000',
       nombre: 'FOCO HALOGENO H4 / 9003 TRANSPARENTE 12 VOLTIOS 100/90 1 P43',
       ubicacion: 'Planta Baja',
