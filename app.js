@@ -20,50 +20,8 @@ const PEDIDO_DEMO = {
   documento: 'SURTIR PEDIDO CLIENTE',
   articulos: [
     {
-      codigo: '1390004',
-      nombre: 'SENSOR DE OXIGENO DELANTERO CHEVROLET SILVERADO 1500 2014-2019',
-      ubicacion: 'Planta Baja',
-      pasillo: '12',
-      torre: '3',
-      nivel: '2',
-      existencia: 50,
-      solicitado: 2,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      requiereRevision: true
-    },
-    {
-      codigo: '1620000',
-      nombre: 'FILTRO DE COMBUSTIBLE NISSAN FRONTIER 2005-2014',
-      ubicacion: 'Planta Baja',
-      pasillo: '14',
-      torre: '1',
-      nivel: '3',
-      existencia: 75,
-      solicitado: 1,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      requiereRevision: true
-    },
-    {
-      codigo: '2612000',
-      nombre: 'BOMBA DE AGUA TOYOTA HILUX 2016-2022',
-      ubicacion: 'Planta Baja',
-      pasillo: '9',
-      torre: '2',
-      nivel: '1',
-      existencia: 30,
-      solicitado: 3,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      requiereRevision: true
-    },
-    {
       codigo: '0245130',
-      nombre: 'TERMOSTATO MOTOR FORD RANGER 2012-2018',
+      nombre: 'AGUA PARA BATERIA 500 REIDEN R-AG',
       ubicacion: 'Planta Baja',
       pasillo: '11',
       torre: '4',
@@ -73,39 +31,45 @@ const PEDIDO_DEMO = {
       surtido: 0,
       estado: 'pendiente',
       motivo_negacion: null,
+      imagen: 'ASSET/0245130.jpg',
+      esMiscelaneo: false,
       requiereRevision: true
     },
     {
-      codigo: '0909100',
-      nombre: 'ALTERNADOR RECONSTRUIDO VOLKSWAGEN PASSAT 2012-2019',
+      codigo: '1390004',
+      nombre: 'CINCHO GRANDE 14 PULGADAS (NEGRO)',
       ubicacion: 'Planta Baja',
-      pasillo: '7',
-      torre: '5',
-      nivel: '1',
-      existencia: 20,
-      solicitado: 1,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      requiereRevision: true
-    },
-    {
-      codigo: '4105000',
-      nombre: 'DISCO DE FRENO DELANTERO HONDA CR-V 2017-2022',
-      ubicacion: 'Planta Baja',
-      pasillo: '15',
-      torre: '2',
-      nivel: '3',
-      existencia: 60,
+      pasillo: '12',
+      torre: '3',
+      nivel: '2',
+      existencia: 50,
       solicitado: 3,
       surtido: 0,
       estado: 'pendiente',
       motivo_negacion: null,
+      imagen: null,
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
+      codigo: '1620000',
+      nombre: 'ENCENDEDOR AUTOMOTRIZ 12 VOLTIOS COMPLETO SIN LUZ DYNAMIC EN',
+      ubicacion: 'Planta Baja',
+      pasillo: '14',
+      torre: '1',
+      nivel: '3',
+      existencia: 75,
+      solicitado: 1,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: null,
+      esMiscelaneo: false,
       requiereRevision: true
     },
     {
       codigo: '1964000',
-      nombre: 'CATALIZADOR UNIVERSAL ACERO INOXIDABLE 2.5 PULGADAS',
+      nombre: 'FOCO HALOGENO H4 / 9003 TRANSPARENTE 12 VOLTIOS 100/90 1 P43',
       ubicacion: 'Planta Baja',
       pasillo: '6',
       torre: '1',
@@ -115,11 +79,29 @@ const PEDIDO_DEMO = {
       surtido: 0,
       estado: 'pendiente',
       motivo_negacion: null,
+      imagen: 'ASSET/1964000.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
+      codigo: '2612000',
+      nombre: 'INTERRUPTOR PALANCA METALICO UN PASO ARROW CON CABLE',
+      ubicacion: 'Planta Baja',
+      pasillo: '9',
+      torre: '2',
+      nivel: '1',
+      existencia: 30,
+      solicitado: 3,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/2612000.jpg',
+      esMiscelaneo: false,
       requiereRevision: true
     },
     {
       codigo: '2655000',
-      nombre: 'BOBINA DE ENCENDIDO AUDI A4 2009-2016',
+      nombre: 'LIMPIADOR CARBURADOR 10 Y CUERPO DE ACELERACION EN AEROSOL T',
       ubicacion: 'Planta Baja',
       pasillo: '10',
       torre: '3',
@@ -129,6 +111,24 @@ const PEDIDO_DEMO = {
       surtido: 0,
       estado: 'pendiente',
       motivo_negacion: null,
+      imagen: 'ASSET/2655000.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
+      codigo: '4105000',
+      nombre: 'TERMINAL INSTALACION REDONDA ZINC ROJO 5/32 IMPORTADO R-5/32',
+      ubicacion: 'Planta Baja',
+      pasillo: '15',
+      torre: '2',
+      nivel: '3',
+      existencia: 60,
+      solicitado: 2,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/4105000.jpg',
+      esMiscelaneo: true,
       requiereRevision: true
     }
   ]
@@ -490,10 +490,20 @@ function procesarEscaneo(codigo) {
     const codigoProducto = codigo.substring(0, 7);
     const cantidadStr    = codigo.substring(7, 13);
     const cantidad       = parseInt(cantidadStr, 10);
-    procesarCodigoProducto(codigoProducto, cantidad, false);
+    const artEscaneado   = buscarArticulo(codigoProducto);
+    // Misceláneo: aunque venga en 18 dígitos, siempre pedir cantidad manual
+    if (artEscaneado && artEscaneado.esMiscelaneo) {
+      if (artEscaneado.estado === 'negado') {
+        showToast('error', 'Producto negado', 'El código escaneado fue negado y no es posible agregar unidades.');
+        return;
+      }
+      abrirBsCantidad(codigoProducto, false);
+    } else {
+      procesarCodigoProducto(codigoProducto, cantidad, false);
+    }
 
   } else if (codigo.length === 7 && soloDigitos) {
-    // Misceláneo: abrir bottom sheet para ingresar cantidad
+    // Misceláneo o código directo: abrir bottom sheet para ingresar cantidad
     const art = buscarArticulo(codigo);
     if (!art) {
       showToast('error', 'Código no encontrado', `El código ${codigo} no pertenece a este pedido.`);
@@ -514,6 +524,18 @@ function procesarEscaneo(codigo) {
  * Busca un artículo en el pedido por código.
  * Retorna el objeto artículo o null.
  */
+const IMG_PLACEHOLDER = `<svg width="48" height="48" viewBox="0 0 24 24" fill="#c5cae9"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>`;
+
+function setProductImage(elementId, imagen, size = 48) {
+  const box = document.getElementById(elementId);
+  if (!box) return;
+  if (imagen) {
+    box.innerHTML = `<img src="${imagen}" style="width:100%;height:100%;object-fit:contain;border-radius:8px;" alt="Producto" onerror="this.parentElement.innerHTML='${IMG_PLACEHOLDER.replace(/'/g, "\\'")}'" />`;
+  } else {
+    box.innerHTML = IMG_PLACEHOLDER;
+  }
+}
+
 function buscarArticulo(codigo) {
   return state.pedido.articulos.find(a => a.codigo === codigo) || null;
 }
@@ -617,6 +639,7 @@ function abrirDetalle(idx) {
   state.articuloActivo = idx;
   const art = state.pedido.articulos[idx];
 
+  setProductImage('det-img-box', art.imagen);
   document.getElementById('det-codigo').textContent     = art.codigo;
   document.getElementById('det-nombre').textContent     = art.nombre;
   document.getElementById('det-ubicacion').textContent  = art.ubicacion;
@@ -922,6 +945,7 @@ function renderRevisionScreen() {
   document.getElementById('rev-progress-fill').style.width = `${pct}%`;
   document.getElementById('rev-current-codigo').textContent = art.codigo;
   document.getElementById('rev-current-nombre').textContent = art.nombre;
+  setProductImage('rev-img-box', art.imagen, 40);
 }
 
 function procesarRevisionScan(raw) {
