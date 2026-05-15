@@ -158,6 +158,15 @@ let state = {
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const audioBuffers = {};
 
+// Desbloquear AudioContext en el primer gesto real del usuario (toque o tecla)
+// Necesario en Android/Zebra: el contexto nace suspendido hasta interacción humana
+function unlockAudio() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('touchend',   unlockAudio, { once: true });
+document.addEventListener('keydown',    unlockAudio, { once: true });
+
 async function loadSound(key, url) {
   try {
     const res = await fetch(url);
