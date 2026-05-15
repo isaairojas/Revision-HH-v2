@@ -171,11 +171,17 @@ async function loadSound(key, url) {
 function playSound(key) {
   const buf = audioBuffers[key];
   if (!buf) return;
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  const src = audioCtx.createBufferSource();
-  src.buffer = buf;
-  src.connect(audioCtx.destination);
-  src.start(0);
+  const play = () => {
+    const src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(audioCtx.destination);
+    src.start(0);
+  };
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(play);
+  } else {
+    play();
+  }
 }
 
 loadSound('ok',    'beep-ok.mp3');
