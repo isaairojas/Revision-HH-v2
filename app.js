@@ -68,6 +68,22 @@ const PEDIDO_DEMO = {
       requiereRevision: true
     },
     {
+      codigo: '1394000',
+      nombre: 'CINTA AISLANTE NEGRO 60 PLASTICA VERZE 20 U/L',
+      ubicacion: 'Planta Baja',
+      pasillo: '3',
+      torre: '1',
+      nivel: '1',
+      existencia: 80,
+      solicitado: 10,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/1394000.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
       codigo: '2546000',
       nombre: 'INTERRUPTOR LLAVE 11 TIPO UNIVERSAL CAMIONES 60-79 POLLAK 31',
       ubicacion: 'Planta Baja',
