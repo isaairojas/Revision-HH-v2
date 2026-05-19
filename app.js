@@ -68,22 +68,6 @@ const PEDIDO_DEMO = {
       requiereRevision: true
     },
     {
-      codigo: '1394000',
-      nombre: 'CINTA AISLANTE NEGRO 60 PLASTICA VERZE 20 U/L',
-      ubicacion: 'Planta Baja',
-      pasillo: '3',
-      torre: '1',
-      nivel: '1',
-      existencia: 80,
-      solicitado: 10,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      imagen: 'ASSET/1394000.jpg',
-      esMiscelaneo: false,
-      requiereRevision: true
-    },
-    {
       codigo: '2546000',
       nombre: 'INTERRUPTOR LLAVE 11 TIPO UNIVERSAL CAMIONES 60-79 POLLAK 31',
       ubicacion: 'Planta Baja',
@@ -99,22 +83,6 @@ const PEDIDO_DEMO = {
       esMiscelaneo: false,
       requiereRevision: true
     },
-    {
-      codigo: '3658201',
-      nombre: 'SOLENOIDE MARCHA DELCO 29MT 12V (10515838) BRASIL',
-      ubicacion: 'Planta Baja',
-      pasillo: '12',
-      torre: '2',
-      nivel: '3',
-      existencia: 15,
-      solicitado: 2,
-      surtido: 0,
-      estado: 'pendiente',
-      motivo_negacion: null,
-      imagen: 'ASSET/3658201.jpg',
-      esMiscelaneo: false,
-      requiereRevision: true
-    }
   ]
 };
 
