@@ -729,8 +729,8 @@ function guardarCantidadDetalle(val) {
   else                        art.estado = 'parcial';
 }
 
-/* Botón Regresar en detalle */
-document.getElementById('btn-detalle-regresar').addEventListener('click', () => {
+/* Botón Regresar en detalle (flecha header y botón footer — misma lógica) */
+function regresarDeDetalle() {
   guardarCantidadDetalle(parseInt(document.getElementById('det-cantidad-input').value, 10) || 0);
   renderArticulosList();
   actualizarContadores();
@@ -740,7 +740,10 @@ document.getElementById('btn-detalle-regresar').addEventListener('click', () => 
     const inp = document.getElementById('scanner-input-surtido');
     if (inp) inp.focus();
   }, 300);
-});
+}
+
+document.getElementById('btn-back-detalle').addEventListener('click', regresarDeDetalle);
+document.getElementById('btn-detalle-regresar').addEventListener('click', regresarDeDetalle);
 
 /* Botón Revisar producto */
 document.getElementById('btn-detalle-revisar').addEventListener('click', () => {
