@@ -359,6 +359,19 @@ function renderArticulosList() {
   });
 }
 
+/* Resalta brevemente la fila del artículo escaneado (400 ms) */
+function highlightArticulo(codigo) {
+  const items = document.querySelectorAll('#articulos-list .articulo-item');
+  for (const item of items) {
+    const art = state.pedido.articulos[parseInt(item.dataset.idx, 10)];
+    if (art && art.codigo === codigo) {
+      item.classList.add('articulo-highlight');
+      setTimeout(() => item.classList.remove('articulo-highlight'), 400);
+      break;
+    }
+  }
+}
+
 function actualizarContadores() {
   const arts = state.pedido.articulos;
   let completado = 0, negado = 0, parcial = 0, pendiente = 0;
@@ -576,16 +589,11 @@ function procesarCodigoProducto(codigo, cantidad, esMiscelaneo) {
   art.surtido += cantidad;
 
   // Actualizar estado
-  if (art.surtido >= art.solicitado) {
-    art.estado = 'completo';
-    showToast('success', 'Artículo completado', `${art.codigo} — ${art.surtido} de ${art.solicitado} piezas surtidas.`);
-  } else {
-    art.estado = 'parcial';
-    showToast('success', 'Cantidad registrada', `${art.codigo} — ${art.surtido} de ${art.solicitado} piezas surtidas.`);
-  }
+  art.estado = art.surtido >= art.solicitado ? 'completo' : 'parcial';
 
   renderArticulosList();
   actualizarContadores();
+  highlightArticulo(art.codigo);
 
   if (art.estado === 'completo') {
     verificarRevision(state.pedido.articulos.indexOf(art));
