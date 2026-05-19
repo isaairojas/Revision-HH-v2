@@ -48,7 +48,7 @@ const PEDIDO_DEMO = {
       estado: 'pendiente',
       motivo_negacion: null,
       imagen: 'ASSET/2655000.jpg',
-      esMiscelaneo: false,
+      esMiscelaneo: true,
       requiereRevision: true
     },
     {
@@ -760,8 +760,11 @@ document.getElementById('btn-detalle-negar').addEventListener('click', () => {
 function abrirBsNegacion(codigo, nombre) {
   state.negacionCodigo = codigo;
   state.negacionMotivo = null;
-  document.getElementById('neg-codigo-val').textContent = codigo;
-  document.getElementById('neg-nombre-val').textContent = nombre;
+  const art = buscarArticulo(codigo);
+  const piezasNegar = art ? (art.solicitado - art.surtido) : 0;
+  document.getElementById('neg-codigo-val').textContent   = codigo;
+  document.getElementById('neg-nombre-val').textContent   = nombre;
+  document.getElementById('neg-cantidad-val').textContent = piezasNegar;
   document.getElementById('neg-motivo-texto').textContent = 'Seleccionar una opción';
   document.getElementById('neg-confirm').disabled = true;
   document.getElementById('neg-confirm').style.background = '#9e9e9e';
@@ -915,7 +918,9 @@ document.getElementById('btn-resumen-menu').addEventListener('click', () => {
 /* Abre revisión si el artículo en ese índice la requiere. Devuelve true si la abrió. */
 function verificarRevision(idx) {
   const art = state.pedido.articulos[idx];
-  const estadoFinal = ['completo', 'negado', 'parcial-negado'].includes(art.estado);
+  // Negado puro (surtido=0): no hay piezas que revisar, omitir revisión
+  if (art.estado === 'negado' && art.surtido === 0) return false;
+  const estadoFinal = ['completo', 'parcial-negado'].includes(art.estado);
   if (estadoFinal && art.requiereRevision && !state.revisionesHechas.has(art.codigo)) {
     abrirRevision(idx);
     return true;
