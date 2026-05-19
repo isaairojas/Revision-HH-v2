@@ -489,29 +489,20 @@ function procesarEscaneo(codigo) {
   const soloDigitos = /^\d+$/.test(codigo);
 
   if (codigo.length === 18 && soloDigitos) {
+    // Etiqueta completa: siempre procesar directo con la cantidad embebida
+    // (misceláneo y no-misceláneo se tratan igual aquí)
     const codigoProducto = codigo.substring(0, 7);
-    const cantidadStr    = codigo.substring(7, 13);
-    const cantidad       = parseInt(cantidadStr, 10);
-    const artEscaneado   = buscarArticulo(codigoProducto);
-    // Misceláneo: aunque venga en 18 dígitos, siempre pedir cantidad manual
-    if (artEscaneado && artEscaneado.esMiscelaneo) {
-      if (artEscaneado.estado === 'negado') {
-        showToast('error', 'Producto negado', 'El código escaneado fue negado y no es posible agregar unidades.');
-        return;
-      }
-      abrirBsCantidad(codigoProducto, false);
-    } else {
-      procesarCodigoProducto(codigoProducto, cantidad, false);
-    }
+    const cantidad       = parseInt(codigo.substring(7, 13), 10);
+    procesarCodigoProducto(codigoProducto, cantidad, false);
 
   } else if (codigo.length === 7 && soloDigitos) {
-    // Misceláneo o código directo: abrir bottom sheet para ingresar cantidad
+    // Código corto: abrir BS para ingresar cantidad manualmente
     const art = buscarArticulo(codigo);
     if (!art) {
       showToast('error', 'Código no encontrado', `El código ${codigo} no pertenece a este pedido.`);
       return;
     }
-    if (art.estado === 'negado') {
+    if (art.estado === 'negado' || art.estado === 'parcial-negado') {
       showToast('error', 'Producto negado', 'El código escaneado fue negado y no es posible agregar unidades.');
       return;
     }
@@ -925,8 +916,10 @@ document.getElementById('btn-resumen-menu').addEventListener('click', () => {
 /* Abre revisión si el artículo en ese índice la requiere. Devuelve true si la abrió. */
 function verificarRevision(idx) {
   const art = state.pedido.articulos[idx];
-  // Sin piezas surtidas físicamente → nada que revisar
+  // Sin piezas surtidas → nada que revisar
   if (art.surtido === 0) return false;
+  // Misceláneo → no requiere revisión en ningún caso
+  if (art.esMiscelaneo) return false;
   const estadoFinal = ['completo', 'parcial-negado'].includes(art.estado);
   if (estadoFinal && art.requiereRevision && !state.revisionesHechas.has(art.codigo)) {
     abrirRevision(idx);
