@@ -651,8 +651,9 @@ function abrirDetalle(idx) {
   document.getElementById('btn-detalle-negar').disabled  = yaEstaNegado;
   document.getElementById('btn-detalle-negar').style.opacity = yaEstaNegado ? '0.5' : '1';
 
-  // Botón Revisar: visible solo cuando hay piezas surtidas, requiere revisión y aún no se revisó
-  const necesitaRevision = art.requiereRevision
+  // Botón Revisar: nunca para misceláneo; solo si hay piezas surtidas, requiere revisión y no se revisó
+  const necesitaRevision = !art.esMiscelaneo
+    && art.requiereRevision
     && art.surtido > 0
     && ['completo', 'parcial-negado'].includes(art.estado)
     && !state.revisionesHechas.has(art.codigo);
