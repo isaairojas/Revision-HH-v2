@@ -426,9 +426,9 @@ scannerInput.addEventListener('keydown', (e) => {
     scanProcessed = true;
     const val = scannerInput.value.trim();
     if (val) {
+      cerrarTeclado();
       procesarEscaneo(val);
       scannerInput.value = '';
-      scannerInput.focus();
     }
     setTimeout(() => { scanProcessed = false; }, 200);
   }
@@ -440,12 +440,22 @@ btnScanSend.addEventListener('click', () => {
   scanProcessed = true;
   const val = scannerInput.value.trim();
   if (val) {
+    cerrarTeclado();
     procesarEscaneo(val);
     scannerInput.value = '';
-    scannerInput.focus();
   }
   setTimeout(() => { scanProcessed = false; }, 200);
 });
+
+// Cierra el teclado virtual y vuelve al modo scanner
+function cerrarTeclado() {
+  if (scannerInput.inputMode !== 'none') {
+    scannerInput.inputMode = 'none';
+    btnKeyboard.style.background = '';
+    scannerInput.blur();          // dispara cierre del teclado en Android/Zebra
+    setTimeout(() => scannerInput.focus(), 50); // refoca sin abrir teclado
+  }
+}
 
 // Botón teclado — alterna entre modo scanner (inputmode=none) y modo teclado (inputmode=text)
 btnKeyboard.addEventListener('click', () => {
@@ -592,6 +602,7 @@ document.getElementById('bs-confirm').addEventListener('click', () => {
     return;
   }
   overlays.bsCantidad.classList.add('hidden');
+  cerrarTeclado();
   procesarCodigoProducto(state.bsCantidadCodigo, val, state.bsCantidadEsCodigo7);
   state.bsCantidadCodigo = null;
 });
