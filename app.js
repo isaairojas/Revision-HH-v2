@@ -66,6 +66,54 @@ const PEDIDO_DEMO = {
       imagen: 'ASSET/4105000.jpg',
       esMiscelaneo: true,
       requiereRevision: true
+    },
+    {
+      codigo: '1394000',
+      nombre: 'CINTA AISLANTE NEGRO 60 PLASTICA VERZE 20 U/L',
+      ubicacion: 'Planta Baja',
+      pasillo: '3',
+      torre: '1',
+      nivel: '1',
+      existencia: 80,
+      solicitado: 10,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/1394000.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
+      codigo: '2546000',
+      nombre: 'INTERRUPTOR LLAVE 11 TIPO UNIVERSAL CAMIONES 60-79 POLLAK 31',
+      ubicacion: 'Planta Baja',
+      pasillo: '8',
+      torre: '4',
+      nivel: '2',
+      existencia: 30,
+      solicitado: 5,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/2546000.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
+    },
+    {
+      codigo: '3658201',
+      nombre: 'SOLENOIDE MARCHA DELCO 29MT 12V (10515838) BRASIL',
+      ubicacion: 'Planta Baja',
+      pasillo: '12',
+      torre: '2',
+      nivel: '3',
+      existencia: 15,
+      solicitado: 2,
+      surtido: 0,
+      estado: 'pendiente',
+      motivo_negacion: null,
+      imagen: 'ASSET/3658201.jpg',
+      esMiscelaneo: false,
+      requiereRevision: true
     }
   ]
 };
@@ -418,10 +466,13 @@ btnScanSend.addEventListener('click', () => {
   setTimeout(() => { scanProcessed = false; }, 200);
 });
 
-// Botón teclado — foco en el input
+// Botón teclado — alterna entre modo scanner (inputmode=none) y modo teclado (inputmode=text)
 btnKeyboard.addEventListener('click', () => {
+  const esKeyboard = scannerInput.inputMode === 'none';
+  scannerInput.inputMode = esKeyboard ? 'text' : 'none';
+  btnKeyboard.style.background = esKeyboard ? '#ffffff30' : '';
   scannerInput.focus();
-  scannerInput.select();
+  if (esKeyboard) scannerInput.select();
 });
 
 /**
@@ -876,11 +927,21 @@ function abrirRevision(idx) {
   const art = state.pedido.articulos[idx];
   state.revisionCodigo  = art.codigo;
   state.revisionConteo  = 0;
+
+  // Sección visible según tipo de producto
+  const esMisc = art.esMiscelaneo;
+  document.getElementById('rev-footer-scanner').classList.toggle('hidden', esMisc);
+  document.getElementById('rev-misc-confirm-zone').classList.toggle('hidden', !esMisc);
+
   renderRevisionScreen();
-  document.getElementById('rev-scan-input').value     = '';
-  document.getElementById('rev-scan-input').inputMode = 'none';
   overlays.revModal.classList.remove('hidden');
-  setTimeout(() => document.getElementById('rev-scan-input').focus(), 300);
+
+  if (!esMisc) {
+    const inp = document.getElementById('rev-scan-input');
+    inp.value     = '';
+    inp.inputMode = 'none';
+    setTimeout(() => inp.focus(), 300);
+  }
 }
 
 function renderRevisionScreen() {
@@ -1022,11 +1083,23 @@ document.getElementById('rev-btn-send').addEventListener('click', () => {
   setTimeout(() => { revScanProcessed = false; }, 200);
 });
 
-document.getElementById('rev-btn-keyboard').addEventListener('click', () => {
-  revScanInput.inputMode = revScanInput.inputMode === 'text' ? 'none' : 'text';
-  revScanInput.focus();
-  revScanInput.select();
+/* Confirmar revisión — solo misceláneo (no requiere escaneo) */
+document.getElementById('rev-btn-confirmar-misc').addEventListener('click', () => {
+  const art = state.pedido.articulos.find(a => a.codigo === state.revisionCodigo);
+  if (!art) return;
+  state.revisionesHechas.add(state.revisionCodigo);
+  renderArticulosList();
+  actualizarContadores();
+  showToast('success', 'Revisión confirmada', `Revisión del producto ${art.codigo} completada.`);
+  state.revisionCodigo = null;
+  state.revisionConteo = 0;
+  overlays.revModal.classList.add('hidden');
+  setTimeout(() => {
+    const inp = document.getElementById('scanner-input-surtido');
+    if (inp) inp.focus();
+  }, 300);
 });
+
 
 /* ============================================================
    CERRAR OVERLAYS AL TOCAR EL FONDO

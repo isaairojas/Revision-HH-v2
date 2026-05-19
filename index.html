@@ -365,21 +365,25 @@
         </div>
       </div>
 
-      <!-- Footer scanner -->
-      <div class="footer-scanner" style="border-radius:0;flex-shrink:0;">
-        <button class="btn-keyboard" id="rev-btn-keyboard" title="Teclado manual">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 5H5v-2h2v2zm11 0H7v-2h11v2zm0-3h-2v-2h2v2zm0-3h-2V8h2v2zm-4 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
-        </button>
+      <!-- Footer scanner (solo no-misceláneo) -->
+      <div class="footer-scanner" id="rev-footer-scanner" style="border-radius:0;flex-shrink:0;">
         <input
           type="text"
           class="scanner-input"
           id="rev-scan-input"
-          placeholder="Escanear etiqueta (18 dígitos)..."
+          placeholder="Escanear etiqueta del producto..."
           autocomplete="off"
           inputmode="none"
         />
         <button id="rev-btn-send" style="background:none;border:none;cursor:pointer;padding:6px;display:flex;align-items:center;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="#1B3892"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+
+      <!-- Botón confirmar (solo misceláneo) -->
+      <div id="rev-misc-confirm-zone" class="hidden" style="padding:12px 16px 16px;">
+        <button id="rev-btn-confirmar-misc" style="width:100%;padding:16px;background:#1B3892;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">
+          Confirmar revisión
         </button>
       </div>
     </div>
@@ -608,6 +612,6 @@
 
 </div><!-- /device-frame -->
 
-<script src="app.js?v=20260515b"></script>
+<script src="app.js?v=20260518a"></script>
 </body>
 </html>
