@@ -652,17 +652,18 @@ function abrirDetalle(idx) {
   document.getElementById('det-solicitado').textContent = art.solicitado;
   document.getElementById('det-cantidad-input').value   = art.surtido;
 
-  // Deshabilitar stepper si está negado
-  const negado = (art.estado === 'negado');
-  document.getElementById('btn-stepper-minus').disabled = negado;
-  document.getElementById('btn-stepper-plus').disabled  = negado;
-  document.getElementById('det-cantidad-input').disabled = negado;
-  document.getElementById('btn-detalle-negar').disabled  = negado;
-  document.getElementById('btn-detalle-negar').style.opacity = negado ? '0.5' : '1';
+  // Bloquear stepper y botón negar cuando ya fue negado (total o parcial)
+  const yaEstaNegado = (art.estado === 'negado' || art.estado === 'parcial-negado');
+  document.getElementById('btn-stepper-minus').disabled = yaEstaNegado;
+  document.getElementById('btn-stepper-plus').disabled  = yaEstaNegado;
+  document.getElementById('det-cantidad-input').disabled = yaEstaNegado;
+  document.getElementById('btn-detalle-negar').disabled  = yaEstaNegado;
+  document.getElementById('btn-detalle-negar').style.opacity = yaEstaNegado ? '0.5' : '1';
 
-  // Botón Revisar: visible cuando el producto requiere revisión y aún no se revisó
+  // Botón Revisar: visible solo cuando hay piezas surtidas, requiere revisión y aún no se revisó
   const necesitaRevision = art.requiereRevision
-    && ['completo', 'negado', 'parcial-negado'].includes(art.estado)
+    && art.surtido > 0
+    && ['completo', 'parcial-negado'].includes(art.estado)
     && !state.revisionesHechas.has(art.codigo);
   const btnRevisar = document.getElementById('btn-detalle-revisar');
   btnRevisar.classList.toggle('hidden', !necesitaRevision);
@@ -753,7 +754,7 @@ document.getElementById('btn-detalle-revisar').addEventListener('click', () => {
 /* Botón Negar producto */
 document.getElementById('btn-detalle-negar').addEventListener('click', () => {
   const art = state.pedido.articulos[state.articuloActivo];
-  if (art.estado === 'negado') return;
+  if (art.estado === 'negado' || art.estado === 'parcial-negado') return;
   abrirBsNegacion(art.codigo, art.nombre);
 });
 
@@ -764,7 +765,10 @@ function abrirBsNegacion(codigo, nombre) {
   state.negacionCodigo = codigo;
   state.negacionMotivo = null;
   const art = buscarArticulo(codigo);
-  const piezasNegar = art ? (art.solicitado - art.surtido) : 0;
+  // Completo → se devuelven las piezas surtidas; si no → las piezas faltantes
+  const piezasNegar = art
+    ? (art.estado === 'completo' ? art.surtido : art.solicitado - art.surtido)
+    : 0;
   document.getElementById('neg-codigo-val').textContent   = codigo;
   document.getElementById('neg-nombre-val').textContent   = nombre;
   document.getElementById('neg-cantidad-val').textContent = piezasNegar;
@@ -921,8 +925,8 @@ document.getElementById('btn-resumen-menu').addEventListener('click', () => {
 /* Abre revisión si el artículo en ese índice la requiere. Devuelve true si la abrió. */
 function verificarRevision(idx) {
   const art = state.pedido.articulos[idx];
-  // Negado puro (surtido=0): no hay piezas que revisar, omitir revisión
-  if (art.estado === 'negado' && art.surtido === 0) return false;
+  // Sin piezas surtidas físicamente → nada que revisar
+  if (art.surtido === 0) return false;
   const estadoFinal = ['completo', 'parcial-negado'].includes(art.estado);
   if (estadoFinal && art.requiereRevision && !state.revisionesHechas.has(art.codigo)) {
     abrirRevision(idx);
