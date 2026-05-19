@@ -80,7 +80,7 @@ const PEDIDO_DEMO = {
       estado: 'pendiente',
       motivo_negacion: null,
       imagen: 'ASSET/1394000.jpg',
-      esMiscelaneo: false,
+      esMiscelaneo: true,
       requiereRevision: true
     },
     {
